@@ -32,7 +32,11 @@ public class AddCityFragment extends DialogFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        listener = (AddCityDialogListener) context;
+        if (context instanceof AddCityDialogListener) {
+            listener = (AddCityDialogListener) context;
+        } else {
+            throw new RuntimeException("Host must implement AddCityDialogListener");
+        }
     }
 
     @Override
@@ -68,6 +72,10 @@ public class AddCityFragment extends DialogFragment {
                 listener.notifyAdapter();
             }
 
+            cityToEdit = null;
+            if (getArguments() != null) {
+                getArguments().clear();
+            }
             dismiss();
         });
     }
@@ -96,4 +104,3 @@ public class AddCityFragment extends DialogFragment {
                 .create();
     }
 }
-
